@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
@@ -27,20 +29,16 @@ class UserController extends Controller
     * @param int $id
     * @return \Illuminate\Http\JsonResponse
     */
-    public function getUserId($id) {
-        if ($user = User::find($id)) {
-            return $user;
-        }
+    public function getUserId(User $user) {
+        return new UserResource($user);
 
-        return response()->json([
-            'status' => False,
-            'message' => 'Пользователь не найден'
-        ], 401);
 
     }
 
     public function getUserAll() {
-        return new UserResource(User::all());
+        return new UserCollection(Cache::remember('users', 60*60*24, function() {  // Кэш тут не нужен. Проверка работоспособности
+            return User::all();
+        }));
     }
 
 }
