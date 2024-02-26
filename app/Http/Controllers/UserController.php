@@ -36,9 +36,7 @@ class UserController extends Controller
     }
 
     public function getUserAll() {
-        return new UserCollection(Cache::remember('users', 60*60*24, function() {  // Кэш тут не нужен. Проверка работоспособности
-            return User::all();
-        }));
+        return new UserCollection(User::all());
     }
 
 }

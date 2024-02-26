@@ -22,9 +22,15 @@ Route::group(['middleware' => ['guest:sanctum']], function() {
 // Если пользователь авторизован
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+
+
+    // Взаимодействие с постами
     Route::get('/post/all', [PostController::class, 'getAll']);
+    Route::post('/post/create', [PostController::class, 'createPost']);
+
+    // Взаимодействие с пользоваталями
     Route::get('/user/yourself', [UserController::class, 'getYourself']);
     Route::get('/user/id/{user}', [UserController::class, 'getUserId']);
     Route::get('/user/all', [UserController::class, 'getUserAll']);
+
 });

@@ -13,4 +13,6 @@ class Post extends Model
         'title',
         'content',
     ];
+
+    public $timestamps = false;
 }
